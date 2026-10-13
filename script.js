@@ -1421,6 +1421,7 @@ let activeQuestions = [];
 let activeMode = '6';
 let reviewMode = false;
 let submitted = false;
+let feedbackMode = 'after-submit';
 let sessionStartedAt = 0;
 
 const el = selector => document.querySelector(selector);
@@ -1439,6 +1440,15 @@ const shuffle = array => {
   return mixed;
 };
 const questionId = question => `${question.date} Q${question.number}`;
+
+function showAnswerFeedback(question, index, selected) {
+  const correct = selected === question.answer;
+  const correctOption = question.options[question.answer];
+  const feedback = el(`#feedback-${index + 1}`);
+  feedback.className = `feedback visible ${correct ? 'correct' : 'incorrect'}`;
+  feedback.innerHTML = `<strong>${correct ? '答对了 · Correct' : `答错了 · 正确答案 ${question.answer}`}</strong><span class="feedback-en">${question.explanation}</span><span class="feedback-zh" lang="zh-CN">${correctOption.zh}。${question.explanationZh}</span>`;
+  return correct;
+}
 
 function saveState() {
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch { /* The quiz still works if browser storage is unavailable. */ }
@@ -1529,7 +1539,9 @@ function startSession(mode = selectedMode(), { resetProgress = false, review = f
   form.reset();
   renderQuestions();
   sessionStartedAt = performance.now();
-  el('#session-label').textContent = review ? `错题复习 · ${amount} 道` : mode === 'all' ? `一战到底 · ${amount} 道未做题` : `${amount} 道题 · 随机抽题`;
+  const learnerName = el('#learner-name').value.trim();
+  const sessionDescription = review ? `错题复习 · ${amount} 道` : mode === 'all' ? `一战到底 · ${amount} 道未做题` : `${amount} 道题 · 随机抽题`;
+  el('#session-label').textContent = learnerName ? `${learnerName} · ${sessionDescription}` : sessionDescription;
   el('#status').textContent = '请为每道题选择一个答案。';
   el('#submit').disabled = false;
   el('#submit').innerHTML = '提交本轮答案 <span aria-hidden="true">→</span>';
@@ -1586,6 +1598,9 @@ function showMistakes() {
 }
 
 el('#start-button').addEventListener('click', () => startSession());
+document.querySelectorAll('input[name="feedback-mode"]').forEach(input => input.addEventListener('change', () => {
+  feedbackMode = document.querySelector('input[name="feedback-mode"]:checked').value;
+}));
 el('#continue-button').addEventListener('click', () => startSession());
 el('#shuffle-button').addEventListener('click', () => startSession(selectedMode(), { resetProgress: true }));
 el('#mistakes-button').addEventListener('click', showMistakes);
@@ -1608,7 +1623,12 @@ el('#mistakes-list').addEventListener('click', event => {
   saveState();
   showMistakes();
 });
-el('#quiz').addEventListener('change', updateProgress);
+el('#quiz').addEventListener('change', event => {
+  updateProgress();
+  if (feedbackMode !== 'immediate' || submitted || !event.target.matches('input[type="radio"]')) return;
+  const index = Number(event.target.name.slice(1)) - 1;
+  showAnswerFeedback(activeQuestions[index], index, event.target.value);
+});
 
 form.addEventListener('submit', event => {
   event.preventDefault();
@@ -1637,10 +1657,7 @@ form.addEventListener('submit', event => {
       const previous = state.mistakes[id];
       state.mistakes[id] = { count: (previous?.count || 0) + 1, lastChoice: selected, lastWrongAt: new Date().toISOString() };
     }
-    const correctOption = question.options[question.answer];
-    const feedback = el(`#feedback-${index + 1}`);
-    feedback.className = `feedback visible ${correct ? 'correct' : 'incorrect'}`;
-    feedback.innerHTML = `<strong>${correct ? '答对了 · Correct' : `答错了 · 正确答案 ${question.answer}`}</strong><span class="feedback-en">${question.explanation}</span><span class="feedback-zh" lang="zh-CN">${correctOption.zh}。${question.explanationZh}</span>`;
+    showAnswerFeedback(question, index, selected);
     el(`#question-${index + 1}`).classList.remove('unanswered');
     if (!reviewMode && !state.completed.includes(id)) state.completed.push(id);
   });

@@ -35,15 +35,15 @@ h1 { font: 700 clamp(32px, 6vw, 46px)/1.12 'Manrope', sans-serif; letter-spacing
 .progress-track { height: 5px; background: #e3e9e2; border-radius: 5px; overflow: hidden; }
 .progress-track span { display: block; height: 100%; width: 0; background: var(--green); border-radius: inherit; transition: width .2s ease; }
 .question { background: var(--card); border: 1px solid var(--line); border-radius: 13px; padding: 25px 27px 23px; margin: 0 0 14px; box-shadow: 0 2px 8px #19392105; }
-.question-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 13px; }
-.q-number { flex: none; color: var(--green); font: 700 12px 'Manrope', sans-serif; letter-spacing: .05em; }
+.question-head { display: block; margin-bottom: 13px; }
+.q-number { display: block; width: fit-content; margin-bottom: 7px; color: var(--green); font: 700 12px 'Manrope', sans-serif; letter-spacing: .05em; }
 .q-prompt { font: 600 16px/1.58 'Manrope', sans-serif; margin: 0; }
-.q-context { font-size: 14px; line-height: 1.65; margin: 0 0 12px 38px; }
-.q-table { width: calc(100% - 38px); margin: 13px 0 16px 38px; border-collapse: collapse; font-size: 12px; }
+.q-context { font-size: 14px; line-height: 1.65; margin: 0 0 12px; }
+.q-table { width: 100%; margin: 13px 0 16px; border-collapse: collapse; font-size: 12px; }
 .q-table th, .q-table td { text-align: left; padding: 7px 9px; border-bottom: 1px solid var(--line); }
 .q-table th { color: var(--muted); font-weight: 600; background: #f7f9f6; }
 .q-table td:not(:first-child), .q-table th:not(:first-child) { text-align: right; }
-.options { display: grid; gap: 7px; margin: 15px 0 0 38px; }
+.options { display: grid; gap: 7px; margin: 15px 0 0; }
 .option { display: flex; align-items: flex-start; gap: 11px; border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; cursor: pointer; font-size: 13px; line-height: 1.5; transition: border-color .15s, background .15s; }
 .option:hover { border-color: #a6b8aa; background: #fbfdfb; }
 .option input { appearance: none; width: 16px; height: 16px; border: 1px solid #b6c0b6; border-radius: 50%; flex: none; margin: 1px 0 0; display: grid; place-content: center; }
@@ -81,6 +81,10 @@ footer { border-top: 1px solid var(--line); padding: 17px 10px 0; display: flex;
 .section-heading h2, .result-panel h2 { font: 700 22px/1.25 'Manrope', sans-serif; letter-spacing: -.025em; margin: 0; }
 .bank-count { color: var(--muted); font-size: 11px; white-space: nowrap; }
 .stats { display: grid; grid-template-columns: repeat(3, 1fr); margin: 24px 0 22px; border: 1px solid var(--line); border-radius: 9px; background: #fafbf9; }
+.name-field { display: grid; gap: 7px; margin: 0 0 20px; color: var(--muted); font-size: 11px; font-weight: 600; }
+.name-field small { color: #929b92; font-size: 10px; font-weight: 400; }
+.name-field input { width: 100%; max-width: 320px; border: 1px solid var(--line); border-radius: 7px; padding: 10px 12px; color: var(--ink); background: #fff; font: 13px 'DM Sans', sans-serif; }
+.name-field input:focus { outline: 2px solid #a6c1ae; outline-offset: 1px; border-color: var(--green); }
 .stat { display: grid; gap: 3px; place-items: center; padding: 13px 6px; }
 .stat + .stat { border-left: 1px solid var(--line); }
 .stat strong { color: var(--green-dark); font: 700 20px 'Manrope', sans-serif; }
@@ -96,6 +100,10 @@ footer { border-top: 1px solid var(--line); padding: 17px 10px 0; display: flex;
 .mode-copy small { color: var(--muted); font-size: 10px; line-height: 1.4; }
 .mode-check { width: 14px; height: 14px; border: 1px solid #b6c0b6; border-radius: 50%; margin-left: auto; flex: none; }
 .mode-card:has(input:checked) .mode-check { border: 4px solid var(--green); }
+.feedback-settings { display: flex; flex-wrap: wrap; gap: 10px 18px; border: 0; padding: 0; margin: 0 0 2px; color: var(--ink); font-size: 12px; }
+.feedback-settings legend { color: var(--muted); font-size: 11px; margin-bottom: 9px; }
+.feedback-settings label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+.feedback-settings input { accent-color: var(--green); }
 .helper { color: var(--muted); font-size: 12px; line-height: 1.7; margin: 14px 0 19px; }
 .home-actions, .result-actions, .mistakes-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 9px; }
 .button:disabled { opacity: .48; cursor: not-allowed; }

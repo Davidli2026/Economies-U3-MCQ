@@ -30,12 +30,20 @@
         <div class="stat"><strong id="completed-count">0</strong><span>已完成</span></div>
         <div class="stat"><strong id="mistake-count">0</strong><span>错题记录</span></div>
       </div>
+      <label class="name-field" for="learner-name"><span>姓名 <small>（选填）</small></span>
+        <input id="learner-name" name="learner-name" type="text" autocomplete="name" maxlength="40" placeholder="输入你的名字">
+      </label>
       <fieldset class="mode-list">
         <legend class="sr-only">选择练习题量</legend>
         <label class="mode-card"><input type="radio" name="mode" value="1"><span class="mode-number">01</span><span class="mode-copy"><strong>蜻蜓点水</strong></span><span class="mode-check" aria-hidden="true"></span></label>
         <label class="mode-card"><input type="radio" name="mode" value="6" checked><span class="mode-number">06</span><span class="mode-copy"><strong>6 道题</strong></span><span class="mode-check" aria-hidden="true"></span></label>
         <label class="mode-card"><input type="radio" name="mode" value="10"><span class="mode-number">10</span><span class="mode-copy"><strong>10 道题</strong></span><span class="mode-check" aria-hidden="true"></span></label>
         <label class="mode-card"><input type="radio" name="mode" value="all"><span class="mode-number">∞</span><span class="mode-copy"><strong>一战到底</strong><small>做完所有未做题</small></span><span class="mode-check" aria-hidden="true"></span></label>
+      </fieldset>
+      <fieldset class="feedback-settings">
+        <legend>答案显示方式</legend>
+        <label><input type="radio" name="feedback-mode" value="immediate"> 选择答案后立即显示</label>
+        <label><input type="radio" name="feedback-mode" value="after-submit" checked> 提交后再显示</label>
       </fieldset>
       <p class="helper" id="mode-help">题目会从未做题中随机抽取；不足所选题量时，本轮会做完剩余题目。</p>
       <div class="home-actions">
