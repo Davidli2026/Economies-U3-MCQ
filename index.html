@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Edexcel IAL Economics U3 practice quiz with bilingual choices, progress tracking and a mistake book.">
+  <title>经济U3 Business behaviour · Practice Quiz</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="Economics U3 Quiz home">ECONOMICS <span>U3</span></a>
+    <span class="edition">Edexcel International A Level</span>
+  </header>
+
+  <main class="layout">
+    <section class="intro" aria-labelledby="page-title">
+      <p class="eyebrow">练习题库</p>
+      <h1 id="page-title">经济U3 Business behaviour</h1>
+    </section>
+
+    <section id="home-screen" class="panel home-panel" aria-labelledby="mode-title">
+      <div class="section-heading">
+        <div><p class="eyebrow">开始练习</p><h2 id="mode-title">选择本轮题量</h2></div>
+        <span class="bank-count" id="bank-count"></span>
+      </div>
+      <div class="stats" aria-label="练习进度">
+        <div class="stat"><strong id="remaining-count">0</strong><span>未做</span></div>
+        <div class="stat"><strong id="completed-count">0</strong><span>已完成</span></div>
+        <div class="stat"><strong id="mistake-count">0</strong><span>错题记录</span></div>
+      </div>
+      <fieldset class="mode-list">
+        <legend class="sr-only">选择练习题量</legend>
+        <label class="mode-card"><input type="radio" name="mode" value="1"><span class="mode-number">01</span><span class="mode-copy"><strong>蜻蜓点水</strong></span><span class="mode-check" aria-hidden="true"></span></label>
+        <label class="mode-card"><input type="radio" name="mode" value="6" checked><span class="mode-number">06</span><span class="mode-copy"><strong>6 道题</strong></span><span class="mode-check" aria-hidden="true"></span></label>
+        <label class="mode-card"><input type="radio" name="mode" value="10"><span class="mode-number">10</span><span class="mode-copy"><strong>10 道题</strong></span><span class="mode-check" aria-hidden="true"></span></label>
+        <label class="mode-card"><input type="radio" name="mode" value="all"><span class="mode-number">∞</span><span class="mode-copy"><strong>一战到底</strong><small>做完所有未做题</small></span><span class="mode-check" aria-hidden="true"></span></label>
+      </fieldset>
+      <p class="helper" id="mode-help">题目会从未做题中随机抽取；不足所选题量时，本轮会做完剩余题目。</p>
+      <div class="home-actions">
+        <button class="button button-primary" id="start-button" type="button">开始答题 <span aria-hidden="true">→</span></button>
+        <button class="button button-secondary" id="mistakes-button" type="button">查看错题本 <span id="mistake-button-count"></span></button>
+      </div>
+      <div class="secondary-actions">
+        <button class="text-button" id="continue-button" type="button" hidden>继续做未做题</button>
+        <button class="text-button" id="shuffle-button" type="button">重新洗牌所有题目</button>
+      </div>
+      <p class="storage-note">答题进度与错题记录保存在这台设备的当前浏览器中。</p>
+    </section>
+
+    <section id="quiz-screen" hidden>
+      <div class="quiz-toolbar">
+        <button class="back-button" type="button" id="back-button">← 返回题库</button>
+        <span class="session-label" id="session-label"></span>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-label"><span id="answered-count">0 / 0 已作答</span><span id="score-label"></span></div>
+        <div class="progress-track" role="progressbar" aria-label="已作答题数" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0" id="progress"><span></span></div>
+      </div>
+      <form id="quiz" novalidate>
+        <div id="questions"></div>
+        <div class="actions">
+          <p id="status" class="status" role="status" aria-live="polite">请为每道题选择一个答案。</p>
+          <button class="button button-primary" type="submit" id="submit">提交本轮答案 <span aria-hidden="true">→</span></button>
+        </div>
+      </form>
+    </section>
+
+    <section id="result-screen" class="panel result-panel" aria-live="polite" hidden>
+      <p class="eyebrow">本轮完成</p>
+      <h2 id="result-title">答题结果</h2>
+      <p class="result-score" id="result-score"></p>
+      <div class="result-stats" aria-label="本轮用时统计">
+        <div class="result-stat"><span>总用时</span><strong id="total-time">—</strong></div>
+        <div class="result-stat"><span>平均每题</span><strong id="average-time">—</strong></div>
+      </div>
+      <p class="result-message" id="result-message"></p>
+      <div class="result-actions">
+        <button class="button button-primary" type="button" id="result-continue">继续做未做题 <span aria-hidden="true">→</span></button>
+        <button class="button button-secondary" type="button" id="result-shuffle">重新洗牌所有题目</button>
+        <button class="button button-secondary" type="button" id="result-mistakes">查看错题本</button>
+        <button class="text-button" type="button" id="result-home">返回题库</button>
+      </div>
+    </section>
+
+    <section id="mistakes-screen" class="panel mistakes-panel" hidden>
+      <div class="section-heading">
+        <div><p class="eyebrow">复习记录</p><h2>错题本</h2></div>
+        <button class="back-button" type="button" id="mistakes-back">← 返回题库</button>
+      </div>
+      <p class="helper" id="mistakes-intro"></p>
+      <div id="mistakes-list"></div>
+      <div class="mistakes-actions">
+        <button class="button button-primary" type="button" id="review-mistakes" hidden>开始复习错题 <span aria-hidden="true">→</span></button>
+        <button class="text-button danger-text" type="button" id="clear-mistakes" hidden>清空错题记录</button>
+      </div>
+    </section>
+
+    <footer>
+      <span>Edexcel IAL Economics · Unit 3</span>
+      <span>Question wording © Pearson Education Ltd. 2020–2021</span>
+    </footer>
+  </main>
+</body>
+</html>
